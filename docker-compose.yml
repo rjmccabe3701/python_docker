@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+   python-nb-server:
+      build: .
+      # image: rob-python
+      hostname: nb-server
+      ports:
+         # - "22:22"
+         - "8888:8888"
+      volumes:
+         - tb_logs:/var/tmp/tb_logs
+         - notebooks:/var/tmp/notebooks
+#TODO: local volumes don't seem to work on windows due to the firewall
+         # - ./tb_logs:/var/tmp/tb_logs
+         # - ./notebooks:/var/tmp/notebooks
+
+      entrypoint:
+         - /scripts/ipython_entrypoint.sh
+
+
+
+   tensorboard:
+      build: .
+      ports:
+         - "6006:6006"
+      volumes:
+         - tb_logs:/var/tmp/tb_logs
+         # - ./tb_logs:/var/tmp/tb_logs
+      command: tensorboard --logdir=/var/tmp/tb_logs
+
+volumes:
+   tb_logs:
+   notebooks:
+
+#TO run:
+# dockeer-compose build
+# dockeer-compose up
