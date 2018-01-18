@@ -6,7 +6,7 @@ services:
       # image: rob-python
       hostname: nb-server
       ports:
-         # - "22:22"
+         - "22:22"
          - "8888:8888"
       volumes:
          - tb_logs:/var/tmp/tb_logs
