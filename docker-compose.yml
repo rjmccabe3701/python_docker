@@ -18,7 +18,8 @@ services:
       entrypoint:
          - /scripts/ipython_entrypoint.sh
 
-
+      depends_on:
+         - db
 
    tensorboard:
       build: .
@@ -28,6 +29,17 @@ services:
          - tb_logs:/var/tmp/tb_logs
          # - ./tb_logs:/var/tmp/tb_logs
       command: tensorboard --logdir=/var/tmp/tb_logs
+
+   db:
+     image: postgres
+     restart: always
+     environment:
+        #This doesn't take for some reason,
+        #the user is always "postgres'
+        # POSTGRES_USERNAME: user
+        POSTGRES_PASSWORD: example
+     volumes:
+         - notebooks:/share
 
 volumes:
    tb_logs:
